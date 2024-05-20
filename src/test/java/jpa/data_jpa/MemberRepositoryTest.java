@@ -25,6 +25,8 @@ public class MemberRepositoryTest {
         Member savedMember = memberRepository.save(member);
 
         Optional<Member> byId = memberRepository.findById(savedMember.getId());
+        //Optional : npe(null pointer exception) 방지용, null 올 수 있는 값을 감싸는 wrapper class
+        //내부에 static 변수로 empty 객체를 생성해 미리 가지고 있음
         Member findMember = byId.get();
 
         assertThat(findMember.getId()).isEqualTo(member.getId());

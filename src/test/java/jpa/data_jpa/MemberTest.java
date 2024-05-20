@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest //Junit5부터는 @RunWith(SrpingRunner.class)를 사용하지 않아도 됨
 @Transactional //각 테스트 코드에서 db로부터 데이터를 가져오고 테스트가 끝나면 db를 원래 상태로 돌려놓음
 @Rollback(false) //method 실행 후 db data rollback 결정
 //test 이후 날린 query를 보낸 것들을 테스트 완료 후에도 롤백하지 않음
