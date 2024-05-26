@@ -70,7 +70,7 @@ public class MemberJpaRepositoryTest {
         assertThat(result.size()).isEqualTo(1);
     }
 
-    @Test
+    @Test //paging sorting test
     public void paging(){
         memberJpaRepository.save(new Member("m1", 10));
         memberJpaRepository.save(new Member("m2", 10));
