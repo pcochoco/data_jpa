@@ -16,7 +16,7 @@ public class Team {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team") //Member ManyToOne, fk 있음 -> 연관관계의 주인
+    @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
     public Team(String name){
