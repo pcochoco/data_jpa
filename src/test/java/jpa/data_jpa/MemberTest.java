@@ -37,9 +37,8 @@ public class MemberTest {
         em.persist(member3);
         em.persist(member4);
 
-        //초기화
-        em.flush();
-        em.clear();
+        em.flush(); //반영
+        em.clear(); //초기화
 
         //담긴 멤버 조회, 확인
         List<Member> members = em.createQuery("select m from Member m", Member.class)

@@ -5,19 +5,18 @@ import jpa.data_jpa.domain.Member;
 import jpa.data_jpa.domain.MemberDto;
 import jpa.data_jpa.domain.Team;
 import jpa.data_jpa.repository.MemberRepository;
+import jpa.data_jpa.repository.TeamRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @Transactional
@@ -58,7 +57,7 @@ public class MemberRepositoryTest {
         memberRepository.save(new Member("m5", 10));
 
         int age = 10;
-        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+        Pageable pageRequest= PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
 
         //when
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
@@ -82,7 +81,7 @@ public class MemberRepositoryTest {
         memberRepository.save(new Member("m5", 10));
 
         int age = 10;
-        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+        Pageable pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
 
         //when
         Slice<Member> slice = memberRepository.findSliceByAge(age, pageRequest);
@@ -157,7 +156,7 @@ public class MemberRepositoryTest {
         em.flush();
         em.clear();
 
-        //when N + 1 problem occurs
+        //N + 1 problem occurs
         List<Member> members = memberRepository.findAll();
         for(Member member : members){
             System.out.println("member = " + member.getUsername());

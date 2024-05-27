@@ -4,11 +4,12 @@ import jakarta.persistence.QueryHint;
 import jpa.data_jpa.domain.Member;
 import jpa.data_jpa.domain.MemberDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
-import java.awt.print.Pageable;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,24 +22,26 @@ import java.util.Optional;
 //T : 엔티티, ID, S : 엔티티와 자식 타입
 public interface MemberRepository extends JpaRepository<Member, Long> {
     //@Query(name = "Member.findByUsername")
-    @Query("select m.username from Member m")
-    List<Member> findByUsername(String username); //another way to use NamedQuery : method 이름으로
+    List<Member> findByUsername(@Param("username") String username); //another way to use NamedQuery : method 이름으로
 
     //NamedQuery(rarely used) -> method
     @Query("select m from Member m where m.username = :username and m.age = :age")
     List <Member> findMember(@Param("username") String username, @Param("age") int age);
 
+
     //이름 이용 조회
     @Query("select m.name from Member m")
     List<String> findUserNameList();
 
-    //Dto using
+    //Dto using : entity 직접 수정 시 의존 문제
     @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
     List<MemberDto> findMemberDto();
+
 
     //@Param for parameter bindings ex) :names
     @Query("select m from Member m where m.username in :names")
     List<Member> findByNames(@Param("names")Collection<String> names);
+
 
     //collection : if no result, return empty collection(not null)
     List<Member> findByUsernameAndAgeGreaterThan(String Username, int age);
@@ -48,6 +51,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     //Single look up for Optional
     Optional<Member> findOptionalByUsername(String username);
+
 
     //paging, sorting
     //1. page : 추가 count query result를 포함
@@ -71,9 +75,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
 
+
     //fetch join : 연관된 엔티티 한번에 조회
     @Query("select m from Member m left join fetch m.team")
     List<Member> findMemberFetchJoin();
+
 
     //EntityGraph : jpql 없이 fetch join
     @Override
@@ -87,6 +93,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = {"team"})
     //@EntityGraph("Member.all") : named entity graph -> entity에 명시
     List<Member> findEntityGraphByUsername(@Param("username") String username);
+
 
     //JPA hint
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
