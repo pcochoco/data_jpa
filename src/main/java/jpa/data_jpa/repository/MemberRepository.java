@@ -1,11 +1,11 @@
 package jpa.data_jpa.repository;
 
+import jakarta.persistence.QueryHint;
 import jpa.data_jpa.domain.Member;
 import jpa.data_jpa.domain.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
 import java.awt.print.Pageable;
@@ -66,5 +66,29 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //4. 반환 타입이 List라면 추가 count query 없이 결과만 반환
     List<Member> findTop3By();
 
+    //Bulk edit query
+    @Modifying(clearAutomatically = true)//Persistence Context 초기화 -> 과거값이 안남도록
+    @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
+    int bulkAgePlus(@Param("age") int age);
 
+    //fetch join : 연관된 엔티티 한번에 조회
+    @Query("select m from Member m left join fetch m.team")
+    List<Member> findMemberFetchJoin();
+
+    //EntityGraph : jpql 없이 fetch join
+    @Override
+    @EntityGraph(attributePaths = {"team"})
+    List<Member> findAll();
+
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member m")
+    List<Member> findMemberEntityGraph();
+
+    @EntityGraph(attributePaths = {"team"})
+    //@EntityGraph("Member.all") : named entity graph -> entity에 명시
+    List<Member> findEntityGraphByUsername(@Param("username") String username);
+
+    //JPA hint
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
+    Member findReadOnlyByUsername(String username);
 }

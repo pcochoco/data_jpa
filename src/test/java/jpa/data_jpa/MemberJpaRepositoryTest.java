@@ -88,4 +88,19 @@ public class MemberJpaRepositoryTest {
         assertThat(members.size()).isEqualTo(3); //wanted size for paging
         assertThat(totalCount).isEqualTo(5); //expected number of age of 10 is 5
     }
+
+    @Test
+    public void bulkUpdate(){
+        memberJpaRepository.save(new Member("m1", 10));
+        memberJpaRepository.save(new Member("m2", 10));
+        memberJpaRepository.save(new Member("m3", 10));
+        memberJpaRepository.save(new Member("m4", 10));
+        memberJpaRepository.save(new Member("m5", 10));
+
+        //when
+        int resultCnt = memberJpaRepository.bulkAgePlus(20);
+
+        //then
+        assertThat(resultCnt).isEqualTo(3);
+    }
 }
