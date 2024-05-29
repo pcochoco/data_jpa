@@ -7,6 +7,7 @@ import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+//Auditing : 순수 jpa 활용 -> Entity extends (this class)
 //entity 생성, 변경 시각의 사람을 추적하고 싶을 경우 사용
 @MappedSuperclass
 @Getter

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.util.Optional;
 import java.util.UUID;
 
-@EnableJpaAuditing //스프링 부트 설정 클래스에 적용
+@EnableJpaAuditing //Auditing : data jpa 활용
 @SpringBootApplication
 public class DataJpaApplication {
 	@Bean

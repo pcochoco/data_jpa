@@ -20,7 +20,7 @@ import java.util.Optional;
 
  */
 //T : 엔티티, ID, S : 엔티티와 자식 타입
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     //@Query(name = "Member.findByUsername")
     List<Member> findByUsername(@Param("username") String username); //another way to use NamedQuery : method 이름으로
 
