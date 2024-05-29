@@ -7,6 +7,8 @@ import jpa.data_jpa.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +40,25 @@ public class MemberController {
 
     @GetMapping("/members")
     public Page<MemberDto> List(Pageable pageable){ //PageRequest 생성해 사용
-        return memberRepository.findAll(Pageable pageable){
-            return memberRepository.findAll(pageable)
-                    .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
-        }
+        return memberRepository.findAll(pageable)
+            .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+        
     }
+
+
+    @GetMapping("/members/each")
+    public Page<MemberDto> list2(
+            //url을 설정 요청으로 받지 않고 개별 설정하는 경우
+            @PageableDefault(
+                    size = 12, sort = {"username"}, direction = Sort.Direction.ASC
+            ) Pageable pageable){
+        return memberRepository.findAll(pageable)
+                .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+        //더 간단한 코드
+        //.map(MemberDto::new);
+
+    }
+
 
 
 
