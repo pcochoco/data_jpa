@@ -2,8 +2,11 @@ package jpa.data_jpa.controller;
 
 import jakarta.annotation.PostConstruct;
 import jpa.data_jpa.domain.Member;
+import jpa.data_jpa.domain.MemberDto;
 import jpa.data_jpa.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +35,15 @@ public class MemberController {
             memberRepository.save(new Member("member" + i, i + 10));
         }
     }
+
+    @GetMapping("/members")
+    public Page<MemberDto> List(Pageable pageable){ //PageRequest 생성해 사용
+        return memberRepository.findAll(Pageable pageable){
+            return memberRepository.findAll(pageable)
+                    .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+        }
+    }
+
 
 
 }
