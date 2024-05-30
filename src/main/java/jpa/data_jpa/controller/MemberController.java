@@ -42,7 +42,7 @@ public class MemberController {
     public Page<MemberDto> List(Pageable pageable){ //PageRequest 생성해 사용
         return memberRepository.findAll(pageable)
             .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
-        
+
     }
 
 
