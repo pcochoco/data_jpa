@@ -65,7 +65,7 @@ public class MemberJpaRepository {
         return em.createQuery("select m from Member m where m.age =:age order by m.username desc", Member.class)
                 .setParameter("age", age)
                 .setFirstResult(offset) //시작
-                .setMaxResults(limit) //개수 
+                .setMaxResults(limit) //개수
                 .getResultList();
     }
 
