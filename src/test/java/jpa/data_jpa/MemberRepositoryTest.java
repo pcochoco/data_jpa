@@ -109,7 +109,7 @@ public class MemberRepositoryTest {
         Page<Member> page = memberRepository.findByAge(age, pageRequest);
         List<Member> content = page.getContent();
 
-        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null);
+        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
 
         //then
         assertThat(content.size()).isEqualTo(3);

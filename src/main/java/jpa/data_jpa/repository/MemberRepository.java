@@ -18,22 +18,29 @@ import java.util.Optional;
     data jpa가 구현 클래스 대신 생성 (프록시 기술 활용)
     @Repository 생략해도 컴포넌트 스캔 가능
 
+    구현 클래스, 구현 메서드 없이 사용 가능
+
+    return type
+    - collection : none -> empty collection (not null)
+    - 단건 조회 메서드 : null
+    - 결과가 여러 개인 경우 : NonUniqueResultException
+
  */
 //T : 엔티티, ID, S : 엔티티와 자식 타입
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
     //@Query(name = "Member.findByUsername")
     List<Member> findByUsername(@Param("username") String username); //another way to use NamedQuery : method 이름으로
 
-    //NamedQuery(rarely used) -> method
+    //NamedQuery(name + query : rarely used) -> @Query(query only)
     @Query("select m from Member m where m.username = :username and m.age = :age")
     List <Member> findMember(@Param("username") String username, @Param("age") int age);
 
 
     //이름 이용 조회
-    @Query("select m.name from Member m")
+    @Query("select m.username from Member m")
     List<String> findUserNameList();
 
-    //Dto using : entity 직접 수정 시 의존 문제
+    //Dto using : entity 직접 수정 시 의존 문제 해결 => new 명령어 사용
     @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
     List<MemberDto> findMemberDto();
 
@@ -53,7 +60,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     Optional<Member> findOptionalByUsername(String username);
 
 
-    //paging, sorting
+    //paging, sorting => page는 0부터 시작
     //1. page : 추가 count query result를 포함
     Page<Member> findByAge(int age, Pageable pageable); //Pageable : interface -> PageRequest 구현체
 
@@ -63,23 +70,22 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     //3. count query 분리 사용
     @Query(
             value = "select m from Member m",
-            countQuery = "select count(m.username) from Member m"
+            countQuery = "select count(m.username) from Member m" //분리 사용의 예
     )
     Page<Member> findMemberAllCountBy(Pageable pageable);
 
     //4. 반환 타입이 List라면 추가 count query 없이 결과만 반환
     List<Member> findTop3By();
 
-    //Bulk edit query
+    //Bulk edit query : 특정 조건이 맞는 데이터를 모두 수정하는 쿼리
     @Modifying(clearAutomatically = true)//Persistence Context 초기화 -> 과거값이 안남도록
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
 
 
-    //fetch join : 연관된 엔티티 한번에 조회
+    //fetch join : 연관된 엔티티 한번에 조회 -> 지연 로딩으로 인한 XToOne의 N + 1 문제 해결
     @Query("select m from Member m left join fetch m.team")
     List<Member> findMemberFetchJoin();
-
 
     //EntityGraph : jpql 없이 fetch join
     @Override
