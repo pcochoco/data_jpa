@@ -23,7 +23,7 @@ import lombok.*;
         attributeNodes = @NamedAttributeNode("team")
 )
 
-public class Member extends BaseEntity{
+public class Member extends JpaBaseEntity{ //auditing(사람, 시각 추적)
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;

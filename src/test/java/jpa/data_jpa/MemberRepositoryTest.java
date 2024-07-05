@@ -19,6 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+/*
+    jpa의 모든 변경은 트랜잭션 안에서 동작
+    - 단순 조회인 경우 persistence context flush 생략 -> 성능 향상
+    - 변경 기능의 경우 트랜잭션 처리
+    - 서비스 계층에서 트랜잭션을 시작하지 않은 경우 repository에서 트랜잭션 시작
+
+ */
 @Rollback(false) //method 실행 후 db data rollback
 public class MemberRepositoryTest {
 

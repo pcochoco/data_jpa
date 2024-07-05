@@ -101,7 +101,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     List<Member> findEntityGraphByUsername(@Param("username") String username);
 
 
-    //JPA hint
+    //JPA hint : 구현체에 정보 제공
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
     Member findReadOnlyByUsername(String username);
 }

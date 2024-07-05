@@ -15,18 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-//No Transaction -> 조회용으로만 사용
+//No Transaction 범위의 데이터 조회 -> 조회용으로만 사용
+/*
+    web 확장 - domain class converter
+ */
 public class MemberController {
 
     private final MemberRepository memberRepository;
 
-    @GetMapping("/members/{id}") //pk 객체 조회
+    @GetMapping("/members/{id}") //pk를 통한 객체 조회
     public String findMember(@PathVariable("id") Long id){
         Member member = memberRepository.findById(id).get();
         return member.getUsername();
     }
 
-    @GetMapping("/members2/{id}") //spring 중간과정 처리 -> 엔티티 객체를 바로 받아오는 방법
+    @GetMapping("/members2/{id}") //spring에서 중간과정 처리 -> 엔티티 객체를 바로 받아오는 방법
     public String findMember2(@PathVariable("id") Member member){
         return member.getUsername();
     }
@@ -38,8 +41,9 @@ public class MemberController {
         }
     }
 
+    //paging and sorting
     @GetMapping("/members")
-    public Page<MemberDto> List(Pageable pageable){ //PageRequest 생성해 사용
+    public Page<MemberDto> List(Pageable pageable){ //Pageable interface -> PageRequest 생성해 사용
         return memberRepository.findAll(pageable)
             .map(member -> new MemberDto(member.getId(), member.getUsername(), null));
 

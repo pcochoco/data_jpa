@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-//user defined repository
+//user defined repository 구현체
+//repository interface + Impl or 사용자 정의 repository interface + Impl 로 이름 만들어야 빈으로 등록
 @RequiredArgsConstructor
 public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
     private EntityManager em;
