@@ -19,6 +19,7 @@ public class MemberTest {
     @PersistenceContext
     EntityManager em;
 
+    //직접 EntityManager로 Member 저장
     @Test
     public void testEntity(){
         Team teamA = new Team("teamA");

@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberRepositoryTest {
 
     @Autowired
-    MemberRepository memberRepository; //구현체가 없는 인터페이스 상태임에도 정상적으로 db에 데이터를 저장하거나 조회 가능
+    MemberRepository memberRepository;
 
     @Autowired
     TeamRepository teamRepository;
@@ -38,6 +38,7 @@ public class MemberRepositoryTest {
     @Autowired
     EntityManager em;
 
+    //MemberRepository extends JpaRepository : interface의 구현체 없이 작동 가능
     @Test
     public void testMember(){
         Member member = new Member("memberA");

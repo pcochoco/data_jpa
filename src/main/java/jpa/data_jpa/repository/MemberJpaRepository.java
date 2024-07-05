@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//순수 jpa 기반 repository
+//순수 jpa 기반 repository : EntityManager + 추가 기능은 query 로
 @Repository
 public class MemberJpaRepository {
     @PersistenceContext

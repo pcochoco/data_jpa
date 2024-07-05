@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Optional;
 /*
     spring data jpa 활용해 동작하는 repository
-    data jpa가 구현 클래스 대신 생성 (프록시 기술 활용)
-    @Repository 생략해도 컴포넌트 스캔 가능
-
-    구현 클래스, 구현 메서드 없이 사용 가능
+    -> data jpa가 구현 클래스 대신 생성 (프록시 기술 활용)
+    -> @Repository 생략해도 컴포넌트 스캔 가능
+    -> 구현 클래스, 구현 메서드 없이 사용 가능
 
     return type
     - collection : none -> empty collection (not null)

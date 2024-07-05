@@ -30,7 +30,7 @@ public class Member extends JpaBaseEntity{ //auditing(사람, 시각 추적)
     private String username;
     private int age;
 
-    @ManyToOne(fetch = FetchType.LAZY) //EAGER : N + 1 problem
+    @ManyToOne(fetch = FetchType.LAZY) //EAGER(연관 값을 함께 가져옴) : N + 1 problem
     @JoinColumn(name = "team_id") //Member ManyToOne, fk 있음 -> 연관관계의 주인
     private Team team;
 
@@ -52,10 +52,10 @@ public class Member extends JpaBaseEntity{ //auditing(사람, 시각 추적)
         }
     }
 
-    //relation methods for both side relations
+    //relation methods for both side relations => 다대일 관계가 되는 Team을 설정
     public void changeTeam(Team team){
         this.team = team;
-        team.getMembers().add(this);
+        team.getMembers().add(this); //member을 team member에 add
     }
 }
 
