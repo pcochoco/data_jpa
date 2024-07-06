@@ -35,6 +35,25 @@
 7. 웹 확장 : domain class converter
    entity 객체를 중간 과정에서 가져옴
 
-8. paging, sorting
-   
+
+   paging, sorting (application.yml / PageableDefault)
+
+8. data jpa 구현체 분석
+   - transactional : readonly -> 변경 없이 조회 -> persistence context flush x -> 성능 향상
+   - save method : 새 엔티티라면 persist, 아니면 merge
+   - 새 엔티티인지 구별하는 방법
+     식별자가 객체인 경우 null, primitive인 경우 0으로 구별
+   - 구별에 관한 문제 
+     genereated value인 경우 save 호출 시점에 식별자가 없으므로 문제되지 않지만
+     @Id로 직접 할당할 경우 식별자 받은 상태로 save -> merge -> db select로 확인
+     => 비효율성 
+     
+
+      -> persistable interface로 방지
+
+9. 이외 기능 (query dsl로 대체)
+    - specification
+    - query by example
+    - projection : root entity (closed - getter / open)
+    - native query 
    
